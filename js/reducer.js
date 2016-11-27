@@ -6,7 +6,7 @@ import { createStore } from 'redux'
 import myCombineReducers from './myCombineReducers'
 
 const combinedReducer = myCombineReducers({ movies, actors});
-export const store = createStore(combinedReducer);
+export const store = createStore(combinedReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 function movies(state = {
     subjects: [],
