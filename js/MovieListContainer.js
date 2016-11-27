@@ -2,8 +2,7 @@
  * Created by apple12 on 2016/11/27.
  */
 
-import React, { Component } from 'react';
-import { store } from './reducer'
+import React, { Component, PropTypes } from 'react'
 import douban from './api/douban'
 import MovieList from './MovieList'
 
@@ -17,6 +16,7 @@ export default class MovieListContainer extends Component {
     }
 
     componentDidMount = () => {
+        const { store } = this.context;
         this.unsubcribe = store.subscribe(()=>{
             this.forceUpdate();
         });
@@ -27,6 +27,7 @@ export default class MovieListContainer extends Component {
     };
 
     getMovies = ()=>{
+        const { store } = this.context;
         (async ()=>{
             this.setState({ listLoading: true });
             const result = await douban.getMoviesFromApi();
@@ -40,6 +41,7 @@ export default class MovieListContainer extends Component {
     };
 
     render = () => {
+        const { store } = this.context;
         const state = store.getState();
         return (
             <MovieList
@@ -51,3 +53,7 @@ export default class MovieListContainer extends Component {
     };
 
 }
+
+MovieListContainer.contextTypes = {
+    store: PropTypes.object
+};
