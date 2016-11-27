@@ -4,7 +4,8 @@
  * @flow
  */
 
-import HomePage from './js/homepage'
+import React from 'react'
+import App from './js/App'
 import { AppRegistry } from 'react-native';
 
-AppRegistry.registerComponent('DoubanRNDemo', () => HomePage);
+AppRegistry.registerComponent('DoubanRNDemo', () => App)

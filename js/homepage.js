@@ -15,8 +15,9 @@ import {
   Image,
 } from 'react-native';
 import douban from './api/douban'
+import { store } from './reducer'
 
-const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
+
 
 export default class HomePage extends Component {
 
@@ -24,7 +25,6 @@ export default class HomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataSource: ds.cloneWithRows([]),
       listLoading: false,
     };
   }
@@ -34,15 +34,21 @@ export default class HomePage extends Component {
   }
 
   getMovies = ()=>{
+
+    if (this.props.store) {
+        console.log(this.props.store.film);
+    }
+
+
     (async ()=>{
       this.setState({ listLoading: true });
       const result = await douban.getMoviesFromApi();
-      this.setState({ listLoading: false });
-      if (result) {
-        this.setState({
-          dataSource: ds.cloneWithRows(result.subjects),
-        });
-      }
+        const action = {
+            type: 'IN_THEATERS',
+            data: result,
+        };
+      store.dispatch(action);
+       this.setState({ listLoading: false });
     })()
   }
 
@@ -71,28 +77,23 @@ export default class HomePage extends Component {
         <View style={styles.seperator}></View>
       </View>
     );
-  }
+  };
 
-  render() {
+
+
+  render = () => {
+
+    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
+
     return (
       <View style={styles.container}>
 
-        {this.state.listLoading ?
-          <ActivityIndicator animating size="large"/>
-          :
-          <Button
-            style={styles.topButton}
-            onPress={this.getMovies}
-            title="加载热映电影"
-            color="blue"
-            accessibilityLabel="Learn more about this purple button"
-          />
-        }
+        <RefreshHeader loading={this.state.listLoading} onPress={this.getMovies}/>
 
         <ListView
           enableEmptySections
           style={styles.list}
-          dataSource={this.state.dataSource}
+          dataSource={ds.cloneWithRows(this.props.film)}
           renderRow={this.renderRow}
         />
 
@@ -100,6 +101,21 @@ export default class HomePage extends Component {
     );
   }
 }
+
+const RefreshHeader = ({
+  loading, onPress,
+}) => (
+    loading ?
+        <ActivityIndicator animating size="large"/>
+        :
+        <Button
+            style={styles.topButton}
+            onPress={onPress}
+            title="加载热映电影"
+            color="blue"
+            accessibilityLabel="Learn more about this purple button"
+        />
+);
 
 const styles = StyleSheet.create({
   container: {
