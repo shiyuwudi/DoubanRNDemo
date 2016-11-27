@@ -5,55 +5,32 @@
 import React, { Component, PropTypes } from 'react'
 import douban from './api/douban'
 import MovieList from './MovieList'
+import { connect } from 'react-redux'
 
-export default class MovieListContainer extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            listLoading: false,
-        };
-    }
-
-    componentDidMount = () => {
-        const { store } = this.context;
-        this.unsubcribe = store.subscribe(()=>{
-            this.forceUpdate();
-        });
+const mapStateToProps = (state) => {
+    return {
+        listLoading: state.movies.listLoading,
+        movies: state.movies.subjects,
     };
-
-    componentWillUnmount = () => {
-        this.unsubcribe();
-    };
-
-    getMovies = ()=>{
-        const { store } = this.context;
-        (async ()=>{
-            this.setState({ listLoading: true });
-            const result = await douban.getMoviesFromApi();
-            const action = {
-                type: 'IN_THEATERS',
-                data: result,
-            };
-            store.dispatch(action);
-            this.setState({ listLoading: false });
-        })()
-    };
-
-    render = () => {
-        const { store } = this.context;
-        const state = store.getState();
-        return (
-            <MovieList
-                listLoading={this.state.listLoading}
-                movies={state.movies}
-                onHeaderPress={this.getMovies}
-            />
-        );
-    };
-
-}
-
-MovieListContainer.contextTypes = {
-    store: PropTypes.object
 };
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onHeaderPress: ()=>{
+            (async ()=>{
+                dispatch({
+                    type: "SET_LISTLOADING",
+                    listLoading: true
+                });
+                const result = await douban.getMoviesFromApi();
+                dispatch({
+                    type: 'IN_THEATERS',
+                    data: result,
+                });
+            })()
+        }
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MovieList);
+
