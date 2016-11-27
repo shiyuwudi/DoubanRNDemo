@@ -3,20 +3,13 @@
  */
 
 import React, { Component } from 'react';
-import Homepage from './homepage'
-import { store } from './reducer'
+import MovieListContainer from './MovieListContainer'
 
 export default class App extends Component {
 
-    componentDidMount = () => {
-        store.subscribe(()=>{
-            this.forceUpdate();
-        });
-    };
-
     render = () => {
        return (
-           <Homepage {...store.getState()} />
+           <MovieListContainer  />
        );
     };
 

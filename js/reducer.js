@@ -5,10 +5,10 @@
 import { createStore } from 'redux'
 import myCombineReducers from './myCombineReducers'
 
-const combinedReducer = myCombineReducers({ film, actors});
+const combinedReducer = myCombineReducers({ movies, actors});
 export const store = createStore(combinedReducer);
 
-function film(state = [], action) {
+function movies(state = [], action) {
 
     switch (action.type) {
 
