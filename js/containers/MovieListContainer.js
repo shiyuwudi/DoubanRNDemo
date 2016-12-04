@@ -5,9 +5,9 @@
 import React from 'react'
 
 import { connect } from 'react-redux'
-import MovieList from './MovieList'
-import { mapStateToProps } from './reducers/movieList'
-import { mapDispatchToProps } from './actions/movieAction'
+import MovieList from '../views/MovieList'
+import { mapStateToProps } from '../reducers/movieList'
+import { mapDispatchToProps } from '../actions/movieAction'
 
 export default connect(mapStateToProps, mapDispatchToProps)(MovieList);
 

@@ -3,7 +3,7 @@
  */
 
 import React, { Component } from 'react';
-import MovieListContainer from './MovieListContainer'
+import MovieListContainer from './containers/MovieListContainer'
 import { store } from './store'
 import { Provider } from 'react-redux'
 

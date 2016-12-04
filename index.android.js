@@ -4,7 +4,7 @@
  * @flow
  */
 
-import HomePage from './js/MovieList'
+import HomePage from './js/views/MovieList'
 import { AppRegistry } from 'react-native';
 
 AppRegistry.registerComponent('DoubanRNDemo', () => HomePage);
