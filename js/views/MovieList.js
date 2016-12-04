@@ -17,19 +17,12 @@ import {
 
 import MovieRow from './MovieRow'
 import LoadingButton from './LoadingButton'
+import MovieDetail from './MovieDetail'
 
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1.id !== r2.id });
-const renderRow = (rowData) => (
-    <MovieRow
-        imageUri={rowData.images.small}
-        title={rowData.title}
-        year={rowData.year}
-        collect_count={rowData.collect_count}
-    />
-);
 
 export default ({
-  listLoading, onHeaderPress, subjects,
+  listLoading, onHeaderPress, subjects, navigator, onRowPress
 }) => (
     <View style={styles.container}>
 
@@ -39,7 +32,14 @@ export default ({
           enableEmptySections
           style={styles.list}
           dataSource={ds.cloneWithRows(subjects)}
-          renderRow={renderRow}
+          renderRow={(rowData) => (
+            <MovieRow
+                imageUri={rowData.images.small}
+                title={`${rowData.title}（${rowData.year}）`}
+                desc={`喜欢：${rowData.collect_count}人；\n分类：${rowData.genres.join('，')}；\n导演：${rowData.directors.map(d=>d.name)}；\n评分：${rowData.rating.average}；`}
+                onPress={()=>onRowPress(rowData.id, navigator)}
+             />
+          )}
       />
 
     </View>
@@ -55,9 +55,4 @@ const styles = StyleSheet.create({
   list: {
     //backgroundColor: 'red',
   },
-  seperator: {
-    backgroundColor: 'brown',
-    height: 1,
-    marginLeft: 20
-  }
 });

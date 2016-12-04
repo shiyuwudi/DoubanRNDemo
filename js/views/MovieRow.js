@@ -8,31 +8,40 @@ import {
     Text,
     View,
     Image,
+    TouchableHighlight,
 } from 'react-native';
 
-export default ({imageUri, title, year, collect_count}) => (
-    <View>
-        <View style={styles.contentView}>
+export default ({
+    imageUri, title, desc, onPress,
+}) => (
 
-            <Image
-                source={{uri: imageUri}}
-                style={{width: 80, height: 100}}
-            />
+    <TouchableHighlight onPress={onPress} activeOpacity={0.8} underlayColor='red'>
+        <View>
+            <View style={styles.contentView}>
 
-            <View style={styles.cellRight}>
+                <Image
+                    source={{uri: imageUri}}
+                    style={{width: 80, height: 100}}
+                />
 
-                <Text style={styles.title}>{`${title}（${year}）`}</Text>
+                <View style={styles.cellRight}>
 
-                <View style={styles.desc}>
-                    <Text>{`喜欢：${collect_count}人`}</Text>
+                    <Text style={styles.title}>
+                        {title}
+                    </Text>
+
+                    <Text style={styles.desc}>
+                        {desc}
+                    </Text>
+
                 </View>
 
+
             </View>
-
-
+            <View style={styles.separator}></View>
         </View>
-        <View style={styles.seperator}></View>
-    </View>
+    </TouchableHighlight>
+
 );
 
 const styles = StyleSheet.create({
@@ -51,5 +60,14 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     desc:{
+        fontSize: 12,
+        fontWeight: '200',
+        marginTop: 8,
+        marginLeft: 16,
+        lineHeight : 16,
     },
+    separator: {
+        backgroundColor: 'gray',
+        height: 1,
+    }
 });
