@@ -4,7 +4,7 @@
 
 import React, { Component, PropTypes } from 'react';
 import MovieListContainer from './MovieListContainer'
-import { store } from './reducer'
+import { store } from './store'
 import { Provider } from 'react-redux'
 
 export default class App extends Component {

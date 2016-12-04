@@ -41,7 +41,7 @@ const renderRow = (rowData)=>(
 );
 
 export default MovieList = ({
-  listLoading, onHeaderPress, movies
+  listLoading, onHeaderPress, subjects,
 }) => (
     <View style={styles.container}>
 
@@ -50,7 +50,7 @@ export default MovieList = ({
       <ListView
           enableEmptySections
           style={styles.list}
-          dataSource={(new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id})).cloneWithRows(movies)}
+          dataSource={(new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id})).cloneWithRows(subjects)}
           renderRow={renderRow}
       />
 

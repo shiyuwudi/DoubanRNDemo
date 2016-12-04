@@ -1,7 +1,7 @@
 /**
  * Created by apple12 on 2016/11/27.
  */
-import { combinedReducer } from '../js/reducer'
+import { combinedReducer } from '../js/reducers/movieList'
 
 test("how reducer works", ()=>{
     const originalState = {};
