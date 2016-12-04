@@ -3,26 +3,14 @@
  */
 
 import {combineReducers} from 'redux'
+import getMapStateToProps from './getMapStateToProps'
 
-const initialMovies = {
+const initialState = {
     subjects: [],
     listLoading: false,
 };
 
-const getData = (state) => state.movieList.movies;
-
-const getMap = (initialState, getData, state) => {
-    const object = {};
-    Object.keys(initialState).forEach((key)=>{
-        object[key] = getData(state)[key];
-    });
-    return object;
-};
-
-export const mapStateToProps = (state) => getMap(initialMovies, getData, state);
-
-
-function movies(state = initialMovies, action) {
+const movies = (state = initialState, action) => {
 
     switch (action.type) {
 
@@ -35,6 +23,7 @@ function movies(state = initialMovies, action) {
             };
 
         case "FETCH_LIST":
+            //正在加载
             return {
                 ...state,
                 listLoading: true,
@@ -44,6 +33,10 @@ function movies(state = initialMovies, action) {
             return state;
     }
 
-}
+};
 
 export const movieList = combineReducers({ movies });
+export const mapStateToProps = getMapStateToProps(
+    initialState,
+    (state) => state.movieList.movies,
+);
