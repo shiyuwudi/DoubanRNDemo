@@ -5,8 +5,9 @@
 import {combineReducers} from 'redux'
 import getMapStateToProps from './getMapStateToProps'
 import {
-    FETCH_LIST, IN_THEATERS, FETCH_DETAIL, MOVIE_DETAILS
-} from '../actions/movieAction'
+    LOAD_MOVIES_REQUEST, LOAD_MOVIES_SUCCESS, LOAD_MOVIES_FAILURE,
+    LOAD_DETAIL_REQUEST, LOAD_DETAIL_SUCCESS, LOAD_DETAIL_FAILURE,
+} from '../actionTypes'
 
 const initialState = {
     subjects: [],
@@ -19,21 +20,34 @@ const movies = (state = initialState, action) => {
 
     switch (action.type) {
 
-        case MOVIE_DETAILS:
+        case LOAD_DETAIL_FAILURE:
+        case LOAD_MOVIES_FAILURE:
+            //加载失败
+            const { error, payload } = action;
+            console.warn('请求出错：', error);
+            console.warn('参考信息', payload);
+
+        case LOAD_DETAIL_SUCCESS:
             //电影详情加载完毕
+            const { id, navigator, data } = action;
+            navigator.push({
+                name: '影片详情',
+                component: 'MovieDetailContainer',
+                params: { id },
+            });
             return {
                 ...state,
                 details: {
                     ...state.details,
-                    [action.id]: action.data,
+                    [id]: data,
                 },
                 detailLoading: {
                     ...state.detailLoading,
-                    [action.id]: false,
+                    [id]: false,
                 },
             };
 
-        case FETCH_DETAIL:
+        case LOAD_DETAIL_REQUEST:
             //正在加载电影详情
             return {
                 ...state,
@@ -47,7 +61,7 @@ const movies = (state = initialState, action) => {
                 },
             };
 
-        case IN_THEATERS:
+        case LOAD_MOVIES_SUCCESS:
             //正在上映
             return {
                 ...state,
@@ -55,7 +69,7 @@ const movies = (state = initialState, action) => {
                 listLoading: false,
             };
 
-        case FETCH_LIST:
+        case LOAD_MOVIES_REQUEST:
             //正在加载
             return {
                 ...state,

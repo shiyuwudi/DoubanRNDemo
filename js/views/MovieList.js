@@ -15,14 +15,13 @@ import {
   Image,
 } from 'react-native';
 
-import MovieRow from './MovieRow'
+import MovieRow from '../containers/MovieRowContainer'
 import LoadingButton from './LoadingButton'
-import MovieDetail from './MovieDetail'
 
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1.id !== r2.id });
 
 export default ({
-  listLoading, onHeaderPress, subjects, navigator, onRowPress
+    listLoading, subjects, detailLoading, onHeaderPress, ...props,
 }) => (
     <View style={styles.container}>
 
@@ -32,14 +31,7 @@ export default ({
           enableEmptySections
           style={styles.list}
           dataSource={ds.cloneWithRows(subjects)}
-          renderRow={(rowData) => (
-            <MovieRow
-                imageUri={rowData.images.small}
-                title={`${rowData.title}（${rowData.year}）`}
-                desc={`喜欢：${rowData.collect_count}人；\n分类：${rowData.genres.join('，')}；\n导演：${rowData.directors.map(d=>d.name)}；\n评分：${rowData.rating.average}；`}
-                onPress={()=>onRowPress(rowData.id, navigator)}
-             />
-          )}
+          renderRow={(rowData) => <MovieRow {...props} rowData={rowData} />}
       />
 
     </View>

@@ -11,7 +11,7 @@ import {
     TouchableHighlight,
 } from 'react-native';
 
-export default ({
+const MovieRow = ({
     imageUri, title, desc, onPress,
 }) => (
 
@@ -41,8 +41,9 @@ export default ({
             <View style={styles.separator}></View>
         </View>
     </TouchableHighlight>
-
 );
+
+export default (MovieRow);
 
 const styles = StyleSheet.create({
     contentView: {
